@@ -72,17 +72,19 @@ sigVx = data1[:,13]
 
 Noli = Noli*5/(50*100*100 + Noli*5)
 
+Nw = 766*1e3
+
 print(F.shape)
 
 
 a = 0; b = a + 8; i=0
-ax.errorbar(vx[a:b],vx[a:b]*F[a:b]*1e5, yerr=sigVx[a:b]*F[a:b], marker=mar[i], color=col[i], label='$\Phi=${:.3g}'.format(Noli[a]) )
+ax.errorbar(vx[a:b],vx[a:b]*F[a:b]*Nw, yerr=sigVx[a:b]*F[a:b]*Nw, marker=mar[i], color=col[i], label='$\Phi=${:.3g}'.format(Noli[a]) )
 a = b; b = a + 8; i=i+1
-ax.errorbar(vx[a:b],vx[a:b]*F[a:b]*1e5, yerr=sigVx[a:b]*F[a:b], marker=mar[i], color=col[i], label='$\Phi=${:.3g}'.format(Noli[a]) )
+ax.errorbar(vx[a:b],vx[a:b]*F[a:b]*Nw, yerr=sigVx[a:b]*F[a:b]*Nw, marker=mar[i], color=col[i], label='$\Phi=${:.3g}'.format(Noli[a]) )
 a = b; b = a + 8; i=i+1
-ax.errorbar(vx[a:b],vx[a:b]*F[a:b]*1e5, yerr=sigVx[a:b]*F[a:b], marker=mar[i], color=col[i], label='$\Phi=${:.3g}'.format(Noli[a]) )
+ax.errorbar(vx[a:b],vx[a:b]*F[a:b]*Nw, yerr=sigVx[a:b]*F[a:b]*Nw, marker=mar[i], color=col[i], label='$\Phi=${:.3g}'.format(Noli[a]) )
 a = b; b = a + 8; i=i+1
-ax.errorbar(vx[a:b],vx[a:b]*F[a:b]*1e5, yerr=sigVx[a:b]*F[a:b], marker=mar[i], color=col[i], label='$\Phi=${:.3g}'.format(Noli[a]) )
+ax.errorbar(vx[a:b],vx[a:b]*F[a:b]*Nw, yerr=sigVx[a:b]*F[a:b]*Nw, marker=mar[i], color=col[i], label='$\Phi=${:.3g}'.format(Noli[a]) )
 
 # ax1.set_ylim([60,80])
 
@@ -101,13 +103,13 @@ ax.cla()
 
 
 a = 0; b = a + 8; i=0
-ax.errorbar(vx[a:b],vx[a:b]*F[a:b], yerr=sigVx[a:b]*F[a:b], linestyle='none', marker=mar[i], color=col[i], label='$\Phi=${:.3g}'.format(Noli[a]) )
+ax.errorbar(vx[a:b],vx[a:b]*F[a:b]*Nw, yerr=sigVx[a:b]*F[a:b]*Nw, linestyle='none', marker=mar[i], color=col[i], label='$\Phi=${:.3g}'.format(Noli[a]) )
 a = b; b = a + 8; i=i+1
-ax.errorbar(vx[a:b],vx[a:b]*F[a:b], yerr=sigVx[a:b]*F[a:b], linestyle='none', marker=mar[i], color=col[i], label='$\Phi=${:.3g}'.format(Noli[a]) )
+ax.errorbar(vx[a:b],vx[a:b]*F[a:b]*Nw, yerr=sigVx[a:b]*F[a:b]*Nw, linestyle='none', marker=mar[i], color=col[i], label='$\Phi=${:.3g}'.format(Noli[a]) )
 a = b; b = a + 8; i=i+1
-ax.errorbar(vx[a:b],vx[a:b]*F[a:b], yerr=sigVx[a:b]*F[a:b], linestyle='none', marker=mar[i], color=col[i], label='$\Phi=${:.3g}'.format(Noli[a]) )
+ax.errorbar(vx[a:b],vx[a:b]*F[a:b]*Nw, yerr=sigVx[a:b]*F[a:b]*Nw, linestyle='none', marker=mar[i], color=col[i], label='$\Phi=${:.3g}'.format(Noli[a]) )
 a = b; b = a + 8; i=i+1
-ax.errorbar(vx[a:b],vx[a:b]*F[a:b], yerr=sigVx[a:b]*F[a:b], linestyle='none', marker=mar[i], color=col[i], label='$\Phi=${:.3g}'.format(Noli[a]) )
+ax.errorbar(vx[a:b],vx[a:b]*F[a:b]*Nw, yerr=sigVx[a:b]*F[a:b]*Nw, linestyle='none', marker=mar[i], color=col[i], label='$\Phi=${:.3g}'.format(Noli[a]) )
 
 # ax1.set_ylim([60,80])
 
@@ -125,7 +127,7 @@ a = 0; b = a + 8; i=0
 
 N = len(F[a:b])
 xx = np.log(vx[a:b])
-yy = np.log(vx[a:b]*F[a:b])
+yy = np.log(vx[a:b]*F[a:b]*Nw)
 delta = N*(xx**2).sum() - ( xx.sum() )**2
 p1 = np.polyfit(xx,yy,1)
 A = p1[1]
@@ -148,31 +150,7 @@ a = b; b = a + 8; i=i+1
 
 N = len(F[a:b])
 xx = np.log(vx[a:b])
-yy = np.log(vx[a:b]*F[a:b])
-delta = N*(xx**2).sum() - ( xx.sum() )**2
-p1 = np.polyfit(xx,yy,1)
-A = p1[1]
-B = p1[0]
-
-ei2 = ( (yy - A - B*xx)**2 ).sum()
-
-sigB = np.sqrt( N/(N-2)*ei2/delta )
-
-p1 = np.polyfit(xx,yy,1)
-
-print("slope=", B)
-print("err=", sigB)
-
-ax.plot([vxmin,vxmax],[np.exp(p1[1])*vxmin**p1[0],np.exp(p1[1])*vxmax**p1[0]], linestyle= '--', color=col[i])
-
-
-
-
-a = b; b = a + 8; i=i+1
-
-N = len(F[a:b])
-xx = np.log(vx[a:b])
-yy = np.log(vx[a:b]*F[a:b])
+yy = np.log(vx[a:b]*F[a:b]*Nw)
 delta = N*(xx**2).sum() - ( xx.sum() )**2
 p1 = np.polyfit(xx,yy,1)
 A = p1[1]
@@ -196,7 +174,31 @@ a = b; b = a + 8; i=i+1
 
 N = len(F[a:b])
 xx = np.log(vx[a:b])
-yy = np.log(vx[a:b]*F[a:b])
+yy = np.log(vx[a:b]*F[a:b]*Nw)
+delta = N*(xx**2).sum() - ( xx.sum() )**2
+p1 = np.polyfit(xx,yy,1)
+A = p1[1]
+B = p1[0]
+
+ei2 = ( (yy - A - B*xx)**2 ).sum()
+
+sigB = np.sqrt( N/(N-2)*ei2/delta )
+
+p1 = np.polyfit(xx,yy,1)
+
+print("slope=", B)
+print("err=", sigB)
+
+ax.plot([vxmin,vxmax],[np.exp(p1[1])*vxmin**p1[0],np.exp(p1[1])*vxmax**p1[0]], linestyle= '--', color=col[i])
+
+
+
+
+a = b; b = a + 8; i=i+1
+
+N = len(F[a:b])
+xx = np.log(vx[a:b])
+yy = np.log(vx[a:b]*F[a:b]*Nw)
 delta = N*(xx**2).sum() - ( xx.sum() )**2
 p1 = np.polyfit(xx,yy,1)
 A = p1[1]
